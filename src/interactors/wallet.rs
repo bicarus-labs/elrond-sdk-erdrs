@@ -1,23 +1,34 @@
 extern crate rand;
 
+use anyhow::Result;
 use bip39::{Language, Mnemonic};
 use hmac::{Hmac, Mac, NewMac};
 use pbkdf2::pbkdf2;
-use sha2::Sha512;
+use serde_json::json;
+use sha2::{Digest, Sha512};
+use sha3::Keccak256;
 use zeroize::Zeroize;
 
-use crate::crypto::private_key::PrivateKey;
+use crate::{
+    crypto::{private_key::PrivateKey, public_key::PublicKey},
+    data::{address::Address, transaction::Transaction},
+};
 
 const EGLD_COIN_TYPE: u32 = 508;
 const HARDENED: u32 = 0x80000000;
 
 type HmacSha521 = Hmac<Sha512>;
 
-pub struct Wallet {}
+pub struct Wallet {
+    priv_key: PrivateKey,
+}
 
 impl Wallet {
     pub fn new() -> Self {
-        Self {}
+        let mut rng = rand::thread_rng();
+        Self {
+            priv_key: PrivateKey::generate(&mut rng),
+        }
     }
 
     // GenerateMnemonic will generate a new mnemonic value using the bip39 implementation
@@ -96,5 +107,29 @@ impl Wallet {
         PrivateKey::from_bytes(key.as_slice()).unwrap()
     }
 
-    pub fn get_address_from_private_key() {}
+    pub fn from_private_key(priv_key: &str) -> Result<Self> {
+        let pri_key = PrivateKey::from_str(priv_key)?;
+        Ok(Self { priv_key: pri_key })
+    }
+
+    pub fn address(&self) -> Address {
+        let public_key = PublicKey::from(&self.priv_key);
+        Address::from(&public_key)
+    }
+
+    pub fn sign_tx(&self, unsign_tx: &Transaction) -> [u8; 64] {
+        let mut unsign_tx = unsign_tx.clone();
+        unsign_tx.signature = None;
+
+        let mut tx_bytes = json!(unsign_tx).to_string().as_bytes().to_vec();
+
+        let should_sign_on_tx_hash = unsign_tx.version >= 2 && unsign_tx.options & 1 > 0;
+        if should_sign_on_tx_hash {
+            let mut h = Keccak256::new();
+            h.update(tx_bytes);
+            tx_bytes = h.finalize().as_slice().to_vec();
+        }
+
+        self.priv_key.sign(tx_bytes)
+    }
 }

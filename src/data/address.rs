@@ -1,8 +1,12 @@
-use anyhow::Result;
-use bech32::{FromBase32, ToBase32, Variant};
+use std::fmt::Debug;
 
 use crate::crypto::public_key::PublicKey;
+use anyhow::Result;
+use bech32::{FromBase32, ToBase32, Variant};
+use serde::de::{Deserialize, Deserializer};
+use serde::ser::{Serialize, Serializer};
 
+#[derive(Clone)]
 pub struct Address([u8; 32]);
 
 impl Address {
@@ -10,8 +14,8 @@ impl Address {
         Self(bytes)
     }
 
-    pub fn from_bech32_string(bech32: String) -> Result<Self> {
-        let (_, data, _) = bech32::decode(bech32.as_str())?;
+    pub fn from_bech32_string(bech32: &str) -> Result<Self> {
+        let (_, data, _) = bech32::decode(bech32)?;
         let data = Vec::<u8>::from_base32(&data)?;
 
         let mut bits: [u8; 32] = [0u8; 32];
@@ -44,5 +48,30 @@ impl<'a> From<&'a PublicKey> for Address {
 impl ToString for Address {
     fn to_string(&self) -> String {
         self.to_bech32_string().unwrap()
+    }
+}
+
+impl Debug for Address {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(self.to_bech32_string().unwrap().as_str())
+    }
+}
+
+impl Serialize for Address {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(self.to_bech32_string().unwrap().as_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for Address {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(Self::from_bech32_string(s.as_str()).unwrap())
     }
 }

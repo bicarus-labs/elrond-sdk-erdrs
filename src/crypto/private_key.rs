@@ -1,10 +1,11 @@
+use super::edwards25519::{sc_mul_add, sc_reduce};
+use crate::crypto::edwards25519::extended_group_element::ExtendedGroupElement;
 use anyhow::{anyhow, Result};
 use rand::{CryptoRng, RngCore};
 use sha2::{Digest, Sha512};
 
-use crate::crypto::edwards25519::extended_group_element::ExtendedGroupElement;
-
 pub const PRIVATE_KEY_LENGTH: usize = 64;
+pub const SIGNATURE_LENGTH: usize = 64;
 pub const SEED_LENGTH: usize = 32;
 
 #[derive(Copy, Clone, Debug)]
@@ -51,6 +52,11 @@ impl PrivateKey {
         }
     }
 
+    pub fn from_str(pk: &str) -> Result<Self> {
+        let bytes = hex::decode(pk)?;
+        PrivateKey::from_bytes(bytes.as_slice())
+    }
+
     pub fn generate<T>(r: &mut T) -> PrivateKey
     where
         T: CryptoRng + RngCore,
@@ -68,6 +74,52 @@ impl PrivateKey {
 
     pub fn as_bytes<'a>(&'a self) -> &'a [u8; PRIVATE_KEY_LENGTH] {
         &self.0
+    }
+
+    pub fn sign(&self, message: Vec<u8>) -> [u8; 64] {
+        let mut h: Sha512 = Sha512::new();
+        h.update(&self.0[..32]);
+
+        let mut digest1 = [0u8; 64];
+        let mut message_digest = [0u8; 64];
+        let mut hram_digest = [0u8; 64];
+        let mut expanded_secret_key = [0u8; 32];
+
+        digest1.copy_from_slice(h.finalize_reset().as_slice());
+        expanded_secret_key.copy_from_slice(&digest1[..32]);
+        expanded_secret_key[0] &= 248;
+        expanded_secret_key[31] &= 63;
+        expanded_secret_key[31] |= 64;
+
+        h.update(&digest1[32..]);
+        h.update(&message);
+        message_digest.copy_from_slice(h.finalize_reset().as_slice());
+
+        let message_digest_reduced = sc_reduce(message_digest);
+        let mut r = ExtendedGroupElement::default();
+        r.ge_scalar_mult_base(message_digest_reduced);
+
+        let encoded_r = r.to_bytes();
+
+        h.update(&encoded_r);
+        h.update(&self.0[32..]);
+        h.update(&message);
+        hram_digest.copy_from_slice(h.finalize_reset().as_slice());
+
+        let hram_digest_reduced = sc_reduce(hram_digest);
+
+        let s = sc_mul_add(
+            hram_digest_reduced,
+            expanded_secret_key,
+            message_digest_reduced,
+        );
+
+        let mut signature = [0u8; 64];
+
+        signature[..32].copy_from_slice(&encoded_r);
+        signature[32..].copy_from_slice(&s);
+
+        signature
     }
 }
 
