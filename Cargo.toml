@@ -1,13 +1,13 @@
 [package]
 name = "elrond-sdk-erdrs"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2018"
 homepage = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
 repository = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
 documentation = "https://docs.rs/elrond-sdk-erdrs"
 license = "MIT"
 description = """
-Elrond Rust SDK for interacting with the Elrond Network (in general) and Smart Contracts (in particular).
+Elrond Rust SDK for interacting with the Elrond Network and Smart Contracts.
 """
 categories = ["api-bindings"]
 keywords = ["elrond", "sdk", "api", "rpc", "tokio"]
