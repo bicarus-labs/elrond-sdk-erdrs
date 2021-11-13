@@ -30,3 +30,10 @@ fn get_private_key_from_mnemonic() {
     println!("index: 1; public_key: {:?}", public_key.to_string());
     println!("index: 1; address: {:?}", address.to_string());
 }
+
+#[test]
+fn load_from_pem() {
+    let wallet = Wallet::from_pem_file("wallet-owner.pem").unwrap();
+    let addr = wallet.address();
+    println!("{:?}", addr);
+}

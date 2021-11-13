@@ -10,7 +10,10 @@ use sha3::Keccak256;
 use zeroize::Zeroize;
 
 use crate::{
-    crypto::{private_key::PrivateKey, public_key::PublicKey},
+    crypto::{
+        private_key::{PrivateKey, PRIVATE_KEY_LENGTH},
+        public_key::PublicKey,
+    },
     data::{address::Address, transaction::Transaction},
 };
 
@@ -109,6 +112,14 @@ impl Wallet {
 
     pub fn from_private_key(priv_key: &str) -> Result<Self> {
         let pri_key = PrivateKey::from_str(priv_key)?;
+        Ok(Self { priv_key: pri_key })
+    }
+
+    pub fn from_pem_file(file_path: &str) -> Result<Self> {
+        let x = pem::parse(std::fs::read_to_string(file_path).unwrap())?;
+        let x = x.contents[..PRIVATE_KEY_LENGTH].to_vec();
+        let priv_key_str = std::str::from_utf8(x.as_slice())?;
+        let pri_key = PrivateKey::from_str(priv_key_str)?;
         Ok(Self { priv_key: pri_key })
     }
 
