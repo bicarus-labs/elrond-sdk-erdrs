@@ -10,7 +10,7 @@ pub struct Account {
     pub balance: String,
     pub code: String,
     pub code_hash: Option<Vec<u8>>,
-    pub root_hash: Option<Vec<u8>>,
+    pub root_hash: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
