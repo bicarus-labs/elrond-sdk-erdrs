@@ -2,6 +2,8 @@ use super::edwards25519::{sc_mul_add, sc_reduce};
 use crate::crypto::edwards25519::extended_group_element::ExtendedGroupElement;
 use anyhow::{anyhow, Result};
 use rand::{CryptoRng, RngCore};
+use serde::de::{Deserialize, Deserializer};
+use serde::ser::{Serialize, Serializer};
 use sha2::{Digest, Sha512};
 
 pub const PRIVATE_KEY_LENGTH: usize = 64;
@@ -126,5 +128,24 @@ impl PrivateKey {
 impl ToString for PrivateKey {
     fn to_string(&self) -> String {
         hex::encode(self.0[..32].to_vec())
+    }
+}
+
+impl Serialize for PrivateKey {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(self.to_string().as_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for PrivateKey {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(Self::from_str(s.as_str()).unwrap())
     }
 }

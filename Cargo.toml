@@ -1,6 +1,6 @@
 [package]
 name = "elrond-sdk-erdrs"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2018"
 homepage = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
 repository = "https://github.com/bicarus-labs/elrond-sdk-erdrs"

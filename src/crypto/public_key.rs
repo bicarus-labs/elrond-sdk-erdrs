@@ -1,7 +1,8 @@
+use super::private_key::PrivateKey;
 use anyhow::Result;
 use bech32::{self, ToBase32, Variant};
-
-use super::private_key::PrivateKey;
+use serde::de::{Deserialize, Deserializer};
+use serde::ser::{Serialize, Serializer};
 
 pub const PUBLIC_KEY_LENGTH: usize = 32;
 
@@ -21,6 +22,13 @@ impl PublicKey {
         let address = bech32::encode("erd", self.0.to_base32(), Variant::Bech32)?;
         Ok(address)
     }
+
+    pub fn from_str(pk: &str) -> Result<Self> {
+        let bytes = hex::decode(pk)?;
+        let mut bits: [u8; 32] = [0u8; 32];
+        bits.copy_from_slice(&bytes[32..]);
+        Ok(Self(bits))
+    }
 }
 
 impl<'a> From<&'a PrivateKey> for PublicKey {
@@ -37,5 +45,24 @@ impl<'a> From<&'a PrivateKey> for PublicKey {
 impl ToString for PublicKey {
     fn to_string(&self) -> String {
         hex::encode(self.0)
+    }
+}
+
+impl Serialize for PublicKey {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(self.to_string().as_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for PublicKey {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(Self::from_str(s.as_str()).unwrap())
     }
 }
