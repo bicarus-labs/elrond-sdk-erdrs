@@ -22,6 +22,7 @@ const HARDENED: u32 = 0x80000000;
 
 type HmacSha521 = Hmac<Sha512>;
 
+#[derive(Copy, Clone, Debug)]
 pub struct Wallet {
     priv_key: PrivateKey,
 }
