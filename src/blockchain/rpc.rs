@@ -1,7 +1,3 @@
-use anyhow::{anyhow, Result};
-use itertools::Itertools;
-use reqwest::Client;
-
 use crate::data::{
     account::{Account, AccountResponse},
     address::Address,
@@ -15,6 +11,9 @@ use crate::data::{
     },
     vm::{ResponseVmValue, VmValueRequest, VmValuesResponseData},
 };
+use anyhow::{anyhow, Result};
+use itertools::Itertools;
+use reqwest::Client;
 
 pub const MAINNET_GATEWAY: &str = "https://gateway.elrond.com";
 pub const TESTNET_GATEWAY: &str = "https://testnet-gateway.elrond.com";
@@ -36,6 +35,7 @@ const GET_NETWORK_STATUS_ENDPOINT: &str = "network/status/";
 const WITH_RESULTS_QUERY_PARAM: &str = "?withResults=true";
 const VM_VALUES_ENDPOINT: &str = "vm-values/query";
 
+#[derive(Clone, Debug)]
 pub struct ElrondProxy {
     proxy_url: String,
     client: Client,
