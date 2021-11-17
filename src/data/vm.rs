@@ -65,6 +65,8 @@ pub struct OutputAccountApi {
     storage_updates: Option<HashMap<String, StorageUpdateApi>>,
     code: Option<String>,
     code_metadata: Option<String>,
+
+    #[serde(default)]
     output_transfers: Vec<OutputTransferApi>,
     call_type: CallType,
 }
