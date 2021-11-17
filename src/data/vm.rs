@@ -96,7 +96,7 @@ pub struct VMOutputApi {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VmValuesResponseData {
-    data: VMOutputApi,
+    pub data: VMOutputApi,
 }
 
 // ResponseVmValue defines a wrapper over string containing returned data in hex format
