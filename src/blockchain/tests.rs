@@ -42,7 +42,10 @@ async fn get_hyper_block_by_nonce() {
 #[tokio::test]
 async fn get_latest_hyper_block_nonce() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
-    let block = blockchain.get_latest_hyper_block_nonce().await.unwrap();
+    let block = blockchain
+        .get_latest_hyper_block_nonce(false)
+        .await
+        .unwrap();
 
     println!("latest block: {:?}", block)
 }

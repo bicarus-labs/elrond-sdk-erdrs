@@ -31,7 +31,7 @@ const SEND_MULTIPLE_TRANSACTIONS_ENDPOINT: &str = "transaction/send-multiple";
 const GET_TRANSACTION_INFO_ENDPOINT: &str = "transaction/";
 const GET_HYPER_BLOCK_BY_NONCE_ENDPOINT: &str = "hyperblock/by-nonce/";
 const GET_HYPER_BLOCK_BY_HASH_ENDPOINT: &str = "hyperblock/by-hash/";
-const GET_NETWORK_STATUS_ENDPOINT: &str = "network/status/";
+const GET_NETWORK_STATUS_ENDPOINT: &str = "network/status";
 const WITH_RESULTS_QUERY_PARAM: &str = "?withResults=true";
 const VM_VALUES_ENDPOINT: &str = "vm-values/query";
 
@@ -116,8 +116,13 @@ impl ElrondProxy {
     }
 
     // get_latest_hyper_block_nonce retrieves the latest hyper block (metachain) nonce from the network
-    pub async fn get_latest_hyper_block_nonce(&self) -> Result<u64> {
-        let endpoint = format!("{}{}", GET_NETWORK_STATUS_ENDPOINT, METACHAIN_SHARD_ID);
+    pub async fn get_latest_hyper_block_nonce(&self, with_metachain: bool) -> Result<u64> {
+        let mut endpoint = GET_NETWORK_STATUS_ENDPOINT.to_string();
+
+        if with_metachain {
+            endpoint = format!("{}/{}", GET_NETWORK_STATUS_ENDPOINT, METACHAIN_SHARD_ID);
+        }
+
         let endpoint = self.get_endpoint(endpoint.as_str());
 
         let resp = self
