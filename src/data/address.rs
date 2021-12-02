@@ -14,6 +14,10 @@ impl Address {
         Self(bytes)
     }
 
+    pub fn to_bytes(&self) -> [u8; 32] {
+        self.0.clone()
+    }
+
     pub fn from_bech32_string(bech32: &str) -> Result<Self> {
         let (_, data, _) = bech32::decode(bech32)?;
         let data = Vec::<u8>::from_base32(&data)?;

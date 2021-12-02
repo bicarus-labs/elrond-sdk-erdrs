@@ -251,3 +251,13 @@ async fn execute_vmquery() {
     let result = blockchain.execute_vmquery(&req).await;
     println!("{:?}", result);
 }
+
+#[tokio::test]
+async fn decode_address() {
+    let addr = Address::from_bech32_string(
+        "erd1qqqqqqqqqqqqqpgqyfjjn43spw7teklwtpz4x5waygq2mluyj9ts0mdwn6",
+    )
+    .unwrap();
+    let encode = hex::encode(addr.to_bytes());
+    println!("{:?}", encode);
+}
