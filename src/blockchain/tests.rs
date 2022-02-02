@@ -261,3 +261,16 @@ async fn decode_address() {
     let encode = hex::encode(addr.to_bytes());
     println!("{:?}", encode);
 }
+
+#[tokio::test]
+async fn get_esdt_tokens() {
+    let addr = Address::from_bech32_string(
+        "erd1e7zw7v7ykt37tdpxn4ckfqgw8q800pfw0wvdp46jnsj059gxcv2sfuy3h8",
+    )
+    .unwrap();
+
+    let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
+    let balances = blockchain.get_account_edst_tokens(&addr).await.unwrap();
+
+    println!("{:?}", balances);
+}

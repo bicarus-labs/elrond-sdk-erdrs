@@ -1,6 +1,9 @@
+use std::collections::HashMap;
+
 use crate::data::{
     account::{Account, AccountResponse},
     address::Address,
+    esdt::{EsdtBalance, EsdtBalanceResponse},
     hyperblock::{HyperBlock, HyperBlockResponse},
     network_config::{NetworkConfig, NetworkConfigResponse},
     network_economics::{NetworkEconomics, NetworkEconomicsResponse},
@@ -176,6 +179,31 @@ impl ElrondProxy {
         match resp.data {
             None => Err(anyhow!("{}", resp.error)),
             Some(b) => Ok(b.account),
+        }
+    }
+
+    // get_account_edst_tokens retrieves an all esdt token of an account from the network
+    pub async fn get_account_edst_tokens(
+        &self,
+        address: &Address,
+    ) -> Result<HashMap<String, EsdtBalance>> {
+        if !address.is_valid() {
+            return Err(anyhow!("invalid address"));
+        }
+
+        let endpoint = ACCOUNT_ENDPOINT.to_string() + address.to_string().as_str() + "/esdt";
+        let endpoint = self.get_endpoint(endpoint.as_str());
+        let resp = self
+            .client
+            .get(endpoint)
+            .send()
+            .await?
+            .json::<EsdtBalanceResponse>()
+            .await?;
+
+        match resp.data {
+            None => Err(anyhow!("{}", resp.error)),
+            Some(b) => Ok(b.esdts),
         }
     }
 
