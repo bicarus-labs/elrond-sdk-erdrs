@@ -182,8 +182,8 @@ impl ElrondProxy {
         }
     }
 
-    // get_account_edst_tokens retrieves an all esdt token of an account from the network
-    pub async fn get_account_edst_tokens(
+    // get_account_esdt_tokens retrieves an all esdt token of an account from the network
+    pub async fn get_account_esdt_tokens(
         &self,
         address: &Address,
     ) -> Result<HashMap<String, EsdtBalance>> {
