@@ -60,7 +60,9 @@ pub struct OutputTransferApi {
 pub struct OutputAccountApi {
     address: Address,
     nonce: u64,
-    balance: Option<String>,
+
+    // TODO: unknow type of data
+    // balance: Option<String>,
     balance_delta: u64,
     storage_updates: Option<HashMap<String, StorageUpdateApi>>,
     code: Option<String>,
