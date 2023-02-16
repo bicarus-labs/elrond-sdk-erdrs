@@ -270,7 +270,7 @@ async fn get_esdt_tokens() {
     .unwrap();
 
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
-    let balances = blockchain.get_account_edst_tokens(&addr).await.unwrap();
+    let balances = blockchain.get_account_esdt_tokens(&addr).await.unwrap();
 
     println!("{:?}", balances);
 }

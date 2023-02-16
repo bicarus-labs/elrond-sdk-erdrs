@@ -129,6 +129,10 @@ impl Wallet {
         Address::from(&public_key)
     }
 
+    pub fn private_key(&self) -> PrivateKey {
+        self.priv_key.clone()
+    }
+
     pub fn sign_tx(&self, unsign_tx: &Transaction) -> [u8; 64] {
         let mut unsign_tx = unsign_tx.clone();
         unsign_tx.signature = None;
