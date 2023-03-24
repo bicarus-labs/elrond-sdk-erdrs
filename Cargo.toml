@@ -1,6 +1,6 @@
 [package]
 name = "elrond-sdk-erdrs"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2018"
 homepage = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
 repository = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
@@ -34,3 +34,5 @@ zeroize = "1.4.2"
 bech32 = "0.8.1"
 itertools = "0.10.1"
 pem = "1.0.1"
+elrond-codec = "0.16.0"
+elrond-codec-derive = "0.16.0"

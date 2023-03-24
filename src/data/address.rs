@@ -3,10 +3,11 @@ use std::fmt::Debug;
 use crate::crypto::public_key::PublicKey;
 use anyhow::Result;
 use bech32::{FromBase32, ToBase32, Variant};
+use elrond_codec_derive::{NestedEncode, NestedDecode, TopEncode, TopDecode};
 use serde::de::{Deserialize, Deserializer};
 use serde::ser::{Serialize, Serializer};
 
-#[derive(Clone)]
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Clone)]
 pub struct Address([u8; 32]);
 
 impl Address {
