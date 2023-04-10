@@ -118,6 +118,24 @@ impl ElrondProxy {
         self.get_hyper_block(endpoint.as_str()).await
     }
 
+    pub async fn get_network_status(&self, shard: u8) -> Result<u64> {
+        let endpoint = format!("{}/{}", GET_NETWORK_STATUS_ENDPOINT, shard);
+        let endpoint = self.get_endpoint(endpoint.as_str());
+
+        let resp = self
+            .client
+            .get(endpoint)
+            .send()
+            .await?
+            .json::<NetworkStatusResponse>()
+            .await?;
+
+        match resp.data {
+            None => Err(anyhow!("{}", resp.error)),
+            Some(b) => Ok(b.status.nonce),
+        }
+    }
+
     // get_latest_hyper_block_nonce retrieves the latest hyper block (metachain) nonce from the network
     pub async fn get_latest_hyper_block_nonce(&self, with_metachain: bool) -> Result<u64> {
         let mut endpoint = GET_NETWORK_STATUS_ENDPOINT.to_string();
