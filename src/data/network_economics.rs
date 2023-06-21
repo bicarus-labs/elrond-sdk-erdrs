@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 // NetworkEconomics holds the network economics details
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkEconomics {
     #[serde(rename = "erd_dev_rewards")]
     pub dev_rewards: String,
@@ -19,13 +19,13 @@ pub struct NetworkEconomics {
     pub total_top_up_value: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkEconomicsData {
     pub metrics: NetworkEconomics,
 }
 
 // NetworkEconomicsResponse holds the network economics endpoint response
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkEconomicsResponse {
     pub error: String,
     pub code: String,

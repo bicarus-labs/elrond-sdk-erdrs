@@ -12,7 +12,7 @@ use crate::data::{
         ArgCreateTransaction, ResponseTxCost, SendTransactionResponse, SendTransactionsResponse,
         Transaction, TransactionInfo, TransactionOnNetwork, TransactionStatus, TxCostResponseData,
     },
-    vm::{ResponseVmValue, VmValueRequest, VmValuesResponseData},
+    vm::{ResponseVmValue, VmValueRequest, VmValuesResponseData}, block::{Block, BlockResponse},
 };
 use anyhow::{anyhow, Result};
 use itertools::Itertools;
@@ -116,6 +116,34 @@ impl ElrondProxy {
     pub async fn get_hyper_block_by_nonce(&self, nonce: u64) -> Result<HyperBlock> {
         let endpoint = GET_HYPER_BLOCK_BY_NONCE_ENDPOINT.to_string() + nonce.to_string().as_str();
         self.get_hyper_block(endpoint.as_str()).await
+    }
+
+    async fn get_block(&self, endpoint: &str) -> Result<Block> {
+        let endpoint = self.get_endpoint(endpoint);
+        let resp = self
+            .client
+            .get(endpoint)
+            .send()
+            .await?
+            .json::<BlockResponse>()
+            .await?;
+
+        match resp.data {
+            None => Err(anyhow!("{}", resp.error)),
+            Some(b) => Ok(b.block),
+        }
+    }
+
+    // get_block_by_hash retrieves a block's info by hash from the network
+    pub async fn get_block_by_hash(&self, shard: u8, hash: &str, with_txs: bool) -> Result<Block> {
+        let endpoint = format!("block/{}/by-hash/{}?withTxs={}", shard, hash, with_txs);
+        self.get_block(endpoint.as_str()).await
+    }
+
+    // get_block_by_nonce retrieves a block's info by nonce from the network
+    pub async fn get_block_by_nonce(&self, shard: u8, nonce: u64, with_txs: bool) -> Result<Block> {
+        let endpoint = format!("block/{}/by-nonce/{}?withTxs={}", shard, nonce, with_txs);
+        self.get_block(endpoint.as_str()).await
     }
 
     pub async fn get_network_status(&self, shard: u8) -> Result<u64> {

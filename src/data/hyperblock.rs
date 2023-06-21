@@ -1,7 +1,9 @@
 use serde::{Deserialize, Serialize};
 
+use super::transaction::TransactionOnNetwork;
+
 // HyperBlock holds a hyper block's details
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct HyperBlock {
     pub nonce: u64,
@@ -18,19 +20,34 @@ pub struct HyperBlock {
     pub developer_fees_in_epoch: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MiniBlock {
+    pub hash: String,
+    #[serde(rename = "type")]
+    pub kind: String,
+    pub processing_type: String,
+    pub construction_state: Option<String>,
+    pub source_shard: u64,
+    pub destination_shard: u64,
+    pub transactions: Vec<TransactionOnNetwork>,
+    pub index_of_first_tx_processed: u64,
+    pub index_of_last_tx_processed: u64,
+}
+
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct ShardBlocks {
     pub hash: String,
     pub nonce: u64,
     pub shard: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct HyperBlockData {
     pub hyperblock: HyperBlock,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct HyperBlockResponse {
     pub data: Option<HyperBlockData>,
     pub error: String,

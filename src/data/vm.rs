@@ -23,7 +23,7 @@ pub enum CallType {
 }
 
 // VmValueRequest defines the request struct for values available in a VM
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VmValueRequest {
     pub sc_address: Address,
@@ -34,7 +34,7 @@ pub struct VmValueRequest {
 }
 
 // LogEntryApi is a wrapper over vmcommon's LogEntry
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LogEntryApi {
     pub identifier: String,
@@ -74,7 +74,7 @@ pub struct OutputAccountApi {
 }
 
 // StorageUpdateApi is a wrapper over vmcommon's StorageUpdate
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StorageUpdateApi {
     offset: String,
@@ -82,7 +82,7 @@ pub struct StorageUpdateApi {
 }
 
 // VMOutputApi is a wrapper over the vmcommon's VMOutput
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VMOutputApi {
     pub return_data: Vec<String>,
@@ -97,14 +97,14 @@ pub struct VMOutputApi {
 }
 
 // VmValuesResponseData follows the format of the data field in an API response for a VM values query
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VmValuesResponseData {
     pub data: VMOutputApi,
 }
 
 // ResponseVmValue defines a wrapper over string containing returned data in hex format
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ResponseVmValue {
     pub data: Option<VmValuesResponseData>,

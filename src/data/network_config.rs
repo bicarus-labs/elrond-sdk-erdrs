@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 // NetworkConfig holds the network configuration parameters
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkConfig {
     #[serde(rename = "erd_chain_id")]
     pub chain_id: String,
@@ -33,13 +33,13 @@ pub struct NetworkConfig {
     pub start_time: i64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkConfigData {
     pub config: NetworkConfig,
 }
 
 // NetworkConfigResponse holds the network config endpoint response
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkConfigResponse {
     pub error: String,
     pub code: String,

@@ -1,6 +1,10 @@
 use crate::{
     blockchain::rpc::{ElrondProxy, DEVNET_GATEWAY},
-    data::{address::Address, transaction::Transaction, vm::VmValueRequest},
+    data::{
+        address::Address,
+        transaction::{Transaction},
+        vm::VmValueRequest,
+    },
     interactors::wallet::Wallet,
 };
 
@@ -24,7 +28,7 @@ async fn get_network_economics() {
 async fn get_hyper_block_by_hash() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
     let block = blockchain
-        .get_hyper_block_by_hash("73259e8ea46343b7074d7183baa786e2d169eb632bc94b01a2e1dc22ed8ebe1c")
+        .get_hyper_block_by_hash("31ab3ca496b8efbe3b831a416a00c190552a0ada92f4ca3ede0d9a8a8a20977b")
         .await
         .unwrap();
 
@@ -34,7 +38,26 @@ async fn get_hyper_block_by_hash() {
 #[tokio::test]
 async fn get_hyper_block_by_nonce() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
-    let block = blockchain.get_hyper_block_by_nonce(7468).await.unwrap();
+    let block = blockchain.get_hyper_block_by_nonce(6395824).await.unwrap();
+
+    println!("block: {:?}", block)
+}
+
+#[tokio::test]
+async fn get_block_by_hash() {
+    let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
+    let block = blockchain
+        .get_block_by_hash(1, "f324901616336c8ec528ef5a7fafebc76894139b13e097575836318f45f9b8eb", true)
+        .await
+        .unwrap();
+
+    println!("block: {:?}", block)
+}
+
+#[tokio::test]
+async fn get_block_by_nonce() {
+    let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
+    let block = blockchain.get_block_by_nonce(1, 6382149, true).await.unwrap();
 
     println!("block: {:?}", block)
 }
@@ -43,7 +66,7 @@ async fn get_hyper_block_by_nonce() {
 async fn get_latest_hyper_block_nonce() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
     let block = blockchain
-        .get_latest_hyper_block_nonce(false)
+        .get_latest_hyper_block_nonce(true)
         .await
         .unwrap();
 
@@ -54,7 +77,7 @@ async fn get_latest_hyper_block_nonce() {
 async fn request_transaction_cost() {
     let tx = Transaction {
         nonce: 1,
-        value: "50".to_string(),
+        value: String::from("50"),
         receiver: Address::from_bech32_string(
             "erd1rh5ws22jxm9pe7dtvhfy6j3uttuupkepferdwtmslms5fydtrh5sx3xr8r",
         )
@@ -99,7 +122,7 @@ async fn get_account() {
 async fn get_transaction_info() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
     let tx = blockchain
-        .get_transaction_info("f0d92368280e9ec541a8d1821072b7f5c74f441e9221292889f69ed5ae84931d")
+        .get_transaction_info("d32d8eabf82b0a7bfdb9d107c8ed6502ea744ce8039de59df3294399bb69c13b")
         .await
         .unwrap();
 
@@ -111,7 +134,7 @@ async fn get_transaction_info_with_results() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
     let tx = blockchain
         .get_transaction_info_with_results(
-            "f0d92368280e9ec541a8d1821072b7f5c74f441e9221292889f69ed5ae84931d",
+            "d32d8eabf82b0a7bfdb9d107c8ed6502ea744ce8039de59df3294399bb69c13b",
         )
         .await
         .unwrap();
@@ -124,7 +147,7 @@ async fn get_transaction_info_with_results() {
 async fn get_transaction_status() {
     let blockchain = ElrondProxy::new(DEVNET_GATEWAY.to_string());
     let status = blockchain
-        .get_transaction_status("f0d92368280e9ec541a8d1821072b7f5c74f441e9221292889f69ed5ae84931d")
+        .get_transaction_status("d32d8eabf82b0a7bfdb9d107c8ed6502ea744ce8039de59df3294399bb69c13b")
         .await
         .unwrap();
 
@@ -165,7 +188,7 @@ async fn sign_tx() {
 
     let mut unsign_tx = Transaction {
         nonce: arg.nonce,
-        value: "0".to_string(),
+        value: String::from("50"),
         receiver: addr.clone(),
         sender: addr.clone(),
         gas_price: arg.gas_price,
@@ -200,7 +223,7 @@ async fn sign_txs() {
 
     let mut unsign_tx = Transaction {
         nonce: arg.nonce,
-        value: "1000000000000000000".to_string(),
+        value: String::from("50"),
         receiver: addr.clone(),
         sender: addr.clone(),
         gas_price: arg.gas_price,
