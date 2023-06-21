@@ -12,6 +12,7 @@ pub struct HyperBlock {
     pub prev_block_hash: String,
     pub epoch: u64,
     pub num_txs: u64,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub shard_blocks: Vec<ShardBlocks>,
     pub timestamp: u64,
     pub accumulated_fees: String,
@@ -30,6 +31,7 @@ pub struct MiniBlock {
     pub construction_state: Option<String>,
     pub source_shard: u64,
     pub destination_shard: u64,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub transactions: Vec<TransactionOnNetwork>,
     pub index_of_first_tx_processed: u64,
     pub index_of_last_tx_processed: u64,

@@ -87,7 +87,8 @@ pub struct TransactionOnNetwork {
     pub esdt_values: Vec<String>,
     pub hyperblock_nonce: Option<u64>,
     pub hyperblock_hash: Option<String>,
-    pub smart_contract_results: Option<Vec<ApiSmartContractResult>>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub smart_contract_results: Vec<ApiSmartContractResult>,
     pub logs: Option<ApiLogs>,
     pub operation: String,
     pub function: Option<String>,
@@ -100,7 +101,8 @@ pub struct TransactionOnNetwork {
 pub struct Events {
     pub address: Address,
     pub identifier: String,
-    pub topics: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub topics: Vec<String>,
     pub data: Option<String>,
 }
 

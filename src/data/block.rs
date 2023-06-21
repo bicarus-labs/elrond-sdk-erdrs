@@ -13,6 +13,7 @@ pub struct Block {
     pub epoch: u64,
     pub shard: u64,
     pub num_txs: u64,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub mini_blocks: Vec<MiniBlock>,
     pub timestamp: u64,
     pub accumulated_fees: String,
