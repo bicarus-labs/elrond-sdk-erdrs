@@ -40,8 +40,8 @@ const VM_VALUES_ENDPOINT: &str = "vm-values/query";
 
 #[derive(Clone, Debug)]
 pub struct ElrondProxy {
-    proxy_url: String,
-    client: Client,
+    pub proxy_url: String,
+    pub client: Client,
 }
 
 impl ElrondProxy {

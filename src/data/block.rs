@@ -3,7 +3,7 @@ use serde::{Serialize, Deserialize};
 use super::hyperblock::MiniBlock;
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct Block {
     pub nonce: u64,
     pub round: u64,

@@ -24,7 +24,7 @@ pub enum CallType {
 
 // VmValueRequest defines the request struct for values available in a VM
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct VmValueRequest {
     pub sc_address: Address,
     pub func_name: String,
@@ -35,7 +35,7 @@ pub struct VmValueRequest {
 
 // LogEntryApi is a wrapper over vmcommon's LogEntry
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct LogEntryApi {
     pub identifier: String,
     pub address: Address,
@@ -64,7 +64,8 @@ pub struct OutputAccountApi {
     // TODO: unknow type of data
     // balance: Option<String>,
     balance_delta: u64,
-    storage_updates: Option<HashMap<String, StorageUpdateApi>>,
+    #[serde(default)]
+    storage_updates: HashMap<String, StorageUpdateApi>,
     code: Option<String>,
     code_metadata: Option<String>,
 
@@ -75,7 +76,7 @@ pub struct OutputAccountApi {
 
 // StorageUpdateApi is a wrapper over vmcommon's StorageUpdate
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct StorageUpdateApi {
     offset: String,
     data: String,
@@ -83,7 +84,7 @@ pub struct StorageUpdateApi {
 
 // VMOutputApi is a wrapper over the vmcommon's VMOutput
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct VMOutputApi {
     pub return_data: Vec<String>,
     pub return_code: String,
@@ -98,14 +99,14 @@ pub struct VMOutputApi {
 
 // VmValuesResponseData follows the format of the data field in an API response for a VM values query
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct VmValuesResponseData {
     pub data: VMOutputApi,
 }
 
 // ResponseVmValue defines a wrapper over string containing returned data in hex format
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct ResponseVmValue {
     pub data: Option<VmValuesResponseData>,
     pub error: String,

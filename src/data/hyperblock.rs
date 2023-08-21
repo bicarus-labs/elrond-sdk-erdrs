@@ -4,7 +4,7 @@ use super::transaction::TransactionOnNetwork;
 
 // HyperBlock holds a hyper block's details
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct HyperBlock {
     pub nonce: u64,
     pub round: u64,
@@ -22,7 +22,7 @@ pub struct HyperBlock {
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct MiniBlock {
     pub hash: String,
     #[serde(rename = "type")]

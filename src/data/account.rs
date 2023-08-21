@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 // Account holds an Account's information
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct Account {
     pub address: Address,
     pub nonce: u64,

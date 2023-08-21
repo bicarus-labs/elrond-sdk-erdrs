@@ -5,7 +5,7 @@ use super::address::Address;
 
 // Account holds an Account's information
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct EsdtBalance {
     pub token_identifier: String,
     pub balance: String,
