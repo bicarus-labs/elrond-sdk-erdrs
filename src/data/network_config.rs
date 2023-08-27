@@ -41,6 +41,7 @@ pub struct NetworkConfigData {
 // NetworkConfigResponse holds the network config endpoint response
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkConfigResponse {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<NetworkConfigData>,

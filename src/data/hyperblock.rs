@@ -52,6 +52,7 @@ pub struct HyperBlockData {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct HyperBlockResponse {
     pub data: Option<HyperBlockData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }

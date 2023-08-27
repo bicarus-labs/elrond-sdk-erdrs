@@ -29,6 +29,7 @@ pub struct NetworkStatusData {
 // NetworkStatusResponse holds the network status response (for a specified shard)
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkStatusResponse {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<NetworkStatusData>,

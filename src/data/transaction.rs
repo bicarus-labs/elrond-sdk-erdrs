@@ -43,6 +43,7 @@ pub struct TxCostResponseData {
 #[serde(rename_all = "camelCase", default)]
 pub struct ResponseTxCost {
     pub data: Option<TxCostResponseData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }
@@ -144,6 +145,7 @@ pub struct TransactionInfoData {
 // TransactionInfo holds a transaction info response from the network
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct TransactionInfo {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<TransactionInfoData>,
@@ -157,6 +159,7 @@ pub struct TransactionStatusData {
 // TransactionStatus holds a transaction's status response from the network
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct TransactionStatus {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<TransactionStatusData>,
@@ -188,6 +191,7 @@ pub struct SendTransactionData {
 // SendTransactionResponse holds the response received from the network when broadcasting a transaction
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct SendTransactionResponse {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<SendTransactionData>,
@@ -203,6 +207,7 @@ pub struct SendTransactionsResponseData {
 // SendTransactionsResponse holds the response received from the network when broadcasting multiple transactions
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct SendTransactionsResponse {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<SendTransactionsResponseData>,

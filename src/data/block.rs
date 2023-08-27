@@ -29,6 +29,7 @@ pub struct BlockData {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct BlockResponse {
     pub data: Option<BlockData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }

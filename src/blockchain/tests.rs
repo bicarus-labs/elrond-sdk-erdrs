@@ -268,8 +268,8 @@ async fn execute_vmquery() {
         .unwrap(),
         func_name: "get".to_string(),
         args: vec![],
-        caller: addr.clone(),
-        value: "0".to_string(),
+        caller: Some(addr.clone()),
+        value: Some("0".to_string()),
     };
     let result = blockchain.execute_vmquery(&req).await;
     println!("{:?}", result);

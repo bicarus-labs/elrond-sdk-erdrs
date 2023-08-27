@@ -25,6 +25,7 @@ pub struct EsdtBalanceData {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct EsdtBalanceResponse {
     pub data: Option<EsdtBalanceData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }

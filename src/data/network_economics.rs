@@ -27,6 +27,7 @@ pub struct NetworkEconomicsData {
 // NetworkEconomicsResponse holds the network economics endpoint response
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct NetworkEconomicsResponse {
+    #[serde(default)]
     pub error: String,
     pub code: String,
     pub data: Option<NetworkEconomicsData>,

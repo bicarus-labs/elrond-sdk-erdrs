@@ -28,8 +28,8 @@ pub enum CallType {
 pub struct VmValueRequest {
     pub sc_address: Address,
     pub func_name: String,
-    pub caller: Address,
-    pub value: String,
+    pub caller: Option<Address>,
+    pub value: Option<String>,
     pub args: Vec<String>,
 }
 
@@ -109,6 +109,7 @@ pub struct VmValuesResponseData {
 #[serde(rename_all = "camelCase", default)]
 pub struct ResponseVmValue {
     pub data: Option<VmValuesResponseData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }

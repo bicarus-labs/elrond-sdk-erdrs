@@ -22,6 +22,7 @@ pub struct AccountData {
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct AccountResponse {
     pub data: Option<AccountData>,
+    #[serde(default)]
     pub error: String,
     pub code: String,
 }
