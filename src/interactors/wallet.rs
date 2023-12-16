@@ -37,7 +37,7 @@ impl Wallet {
 
     // GenerateMnemonic will generate a new mnemonic value using the bip39 implementation
     pub fn generate_mnemonic() -> Mnemonic {
-        let mut rng = rand::thread_rng();
+        let mut rng = bip39::rand::thread_rng();
         Mnemonic::generate_in_with(&mut rng, Language::English, 24).unwrap()
     }
 

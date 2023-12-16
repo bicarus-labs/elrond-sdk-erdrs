@@ -1,6 +1,6 @@
 [package]
 name = "elrond-sdk-erdrs"
-version = "0.2.12"
+version = "0.2.14"
 edition = "2018"
 homepage = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
 repository = "https://github.com/bicarus-labs/elrond-sdk-erdrs"
@@ -16,13 +16,13 @@ keywords = ["elrond", "sdk", "api", "rpc", "tokio"]
 
 [dependencies]
 tokio = { version = "1.12.0", features = ["full"] }
-reqwest = { version = "0.11.4", features = ["blocking", "json"] }
+reqwest = { version = "0.11.20", features = ["blocking", "json"] }
 serde = { version = "1.0.130", features = ["derive"] }
 serde_json = { version = "1.0.68", features = ["preserve_order"] }
 serde_repr = "0.1.7"
 anyhow = "1.0.44"
 rand = "0.6.0"
-bip39 = "1.0.1"
+bip39 = {version = "2.0.0", features = ["rand_core", "rand"] }
 sha2 = "0.9.8"
 sha3 = "0.9.1"
 hmac = { version = "0.11.0", features = ["std"] }
@@ -36,3 +36,4 @@ itertools = "0.10.1"
 pem = "1.0.1"
 elrond-codec = "0.16.0"
 elrond-codec-derive = "0.16.0"
+num-bigint = "0.4.4"

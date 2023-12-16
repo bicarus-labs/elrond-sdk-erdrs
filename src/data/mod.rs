@@ -8,3 +8,4 @@ pub mod network_status;
 pub mod transaction;
 pub mod vm;
 pub mod block;
+pub mod biguint;
