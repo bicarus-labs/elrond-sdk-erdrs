@@ -3,8 +3,9 @@ use elrond_codec::{
     NestedEncodeOutput, TopDecode, TopDecodeInput, TopEncode, TopEncodeOutput,
 };
 use num_bigint::BigUint as BigUintLib;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Clone, Debug, Deserialize, Serialize)]
 pub struct BigUint(BigUintLib);
 
 impl From<BigUint> for BigUintLib {
