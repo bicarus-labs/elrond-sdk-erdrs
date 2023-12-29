@@ -52,6 +52,13 @@ impl ElrondProxy {
         }
     }
 
+    pub fn new_with_client(proxy_url: String, client: Client) -> Self {
+        Self {
+            proxy_url,
+            client,
+        }
+    }
+
     fn get_endpoint(&self, endpoint: &str) -> String {
         format!("{}/{}", self.proxy_url, endpoint)
     }
